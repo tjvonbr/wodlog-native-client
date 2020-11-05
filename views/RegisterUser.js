@@ -3,12 +3,16 @@ import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import * as firebase from 'firebase';
 
-function SignIn({ navigation }) {
+// Not sure if there is a way to clean this up...
+function RegisterUser({ navigation }) {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  async function handleLogin() {
-    firebase.auth().signInWithEmailAndPassword(email, password)
+  function handleRegister() {
+    firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(response => console.log(response))
     .catch(error => console.log(error))
     navigation.navigate("Dashboard")
@@ -16,10 +20,29 @@ function SignIn({ navigation }) {
 
   return (
     <View style={styles.wrapper}>
-      <View style={styles.textWrapper}>
-        <Text style={styles.header}>Welcome back!</Text>
+      <View style={styles.headerWrapper}>
+        <Text style={styles.header}>Let's get you started!</Text>
       </View>
       <View style={styles.inputWrapper}>
+        <TextInput
+          style={styles.input}
+          onChangeText={text => setFirstName(text)}
+          placeholder='First name'
+          value={firstName}
+        />
+        <TextInput
+          style={styles.input}
+          onChangeText={text => setLastName(text)}
+          placeholder='Last name'
+          value={lastName}
+        />
+        <TextInput
+          style={styles.input}
+          onChangeText={text => setUsername(text)}
+          autoCapitalize='none'
+          placeholder='Username'
+          value={username}
+        />
         <TextInput
           style={styles.input}
           onChangeText={text => setEmail(text)}
@@ -36,16 +59,16 @@ function SignIn({ navigation }) {
         />
         <TouchableOpacity
           style={styles.button}
-          onPress={handleLogin}
+          onPress={handleRegister}
           title='Submit' 
         >
-          <Text style={styles.buttonText}>Login</Text>
+          <Text style={styles.btnText}>Continue</Text>
         </TouchableOpacity>
         <TouchableOpacity 
-          onPress={() => navigation.navigate('Register')}
+          onPress={() => navigation.navigate('SignIn')}
         >
           <Text style={styles.redirect}>
-            Don't have an account yet?  Sign up here.
+            Already have an account?  Sign in!
           </Text>
         </TouchableOpacity>
       </View>
@@ -59,8 +82,16 @@ const styles = EStyleSheet.create({
     width: "100%",
     backgroundColor: "$white",
   },
-  textWrapper: {
-    flex: 1,
+  headerWrapper: {
+    height: '30%',
+  },
+  header: {
+    position: 'relative',
+    top: '40%',
+    left: '10%',
+    width: '70%',
+    fontSize: '2rem',
+    fontWeight: '600',
   },
   inputWrapper: {
     flex: 1,
@@ -68,14 +99,6 @@ const styles = EStyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
-  },
-  header: {
-    position: 'relative',
-    top: '25%',
-    left: '10%',
-    width: '100%',
-    fontSize: '2rem',
-    fontWeight: '600',
   },
   input: {
     width: '90%',
@@ -100,7 +123,7 @@ const styles = EStyleSheet.create({
     borderBottomLeftRadius: 7,
     borderTopLeftRadius: 7,
   },
-  buttonText: {
+  btnText: {
     color: '$white',
     fontSize: '1rem',
     fontWeight: '500'
@@ -112,4 +135,4 @@ const styles = EStyleSheet.create({
   }
 })
 
-export default SignIn;
+export default RegisterUser;
