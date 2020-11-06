@@ -1,11 +1,12 @@
 import React from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
+import { Text } from 'react-native';
+import GradientView from '../components/LinearGradient';
 
 function History() {
   return (
-    <SafeAreaView>
+    <GradientView>
       <Text>History</Text>
-    </SafeAreaView>
+    </GradientView>
   )
 }
 

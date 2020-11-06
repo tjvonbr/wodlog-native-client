@@ -1,12 +1,12 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Text } from 'react-native';
+import GradientView from '../components/LinearGradient';
 
 function Exercises() {
   return (
-    <SafeAreaView>
+    <GradientView>
       <Text>Exercises</Text>
-    </SafeAreaView>
+    </GradientView>
   )
 }
 
