@@ -55,6 +55,7 @@ function App() {
     <NavigationContainer>
       {user ? (
         <Tab.Navigator
+          initialRouteName='Dashboard'
           tabBarOptions={{
             activeBackgroundColor: '#ffffff',
             inactiveBackgroundColor: '#ffffff',
