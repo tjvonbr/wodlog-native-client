@@ -1,14 +1,33 @@
-import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { Modal, Text, TouchableOpacity, View } from 'react-native';
 import GradientView from '../components/LinearGradient';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 function Dashboard() {
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <GradientView>
+      <Modal
+        animationType="slide"
+        visible={modalVisible}
+        transparent={true}
+      >
+        <View style={styles.modal}>
+          <TouchableOpacity
+            style={styles.transBtn}
+            onPress={() => setModalVisible(false)}
+          >
+            <Text>Modal appears!</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
       <View>
         <Text style={styles.header}>Dashboard</Text>
-        <TouchableOpacity style={styles.transBtn}>
+        <TouchableOpacity 
+          style={styles.transBtn}
+          onPress={() => setModalVisible(true)}  
+        >
           <Text>Add Workout</Text>
         </TouchableOpacity>
       </View>
@@ -22,11 +41,19 @@ const styles = EStyleSheet.create({
     fontSize: '2rem',
     fontWeight: '600',
   },
+  modal: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white'
+  },
   transBtn: {
     height: '3rem',
     width: '50%',
     borderColor: 'black',
-    borderWidth: 1,
+    borderWidth: 2,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
