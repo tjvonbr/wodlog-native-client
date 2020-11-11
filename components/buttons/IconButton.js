@@ -33,6 +33,9 @@ const styles = EStyleSheet.create({
     borderBottomRightRadius: 7,
     borderBottomLeftRadius: 7,
     borderTopLeftRadius: 7,
+    shadowColor: 'rgba(0,0,0, .4)',
+    shadowOffset: {height: 1, width: 1},
+    shadowOpacity: 1
   },
   iconWrapper: {
     flex: 1,
