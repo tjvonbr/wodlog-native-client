@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInput, View } from 'react-native';
 import Modal from 'react-native-modal';
-import IconButton from './IconButton';
+import IconButton from './buttons/IconButton';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 const AddWorkoutModal = ({ 

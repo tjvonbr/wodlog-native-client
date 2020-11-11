@@ -60,7 +60,7 @@ function App() {
           tabBarOptions={{
             activeBackgroundColor: '#ffffff',
             inactiveBackgroundColor: '#ffffff',
-            activeTintColor: 'blue',
+            activeTintColor: '#de4ea8',
           }}
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
