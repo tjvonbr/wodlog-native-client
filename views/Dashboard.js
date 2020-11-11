@@ -1,35 +1,52 @@
 import React, { useState } from 'react';
-import { Modal, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
+import AddWorkoutModal from '../components/AddWorkoutModal';
 import GradientView from '../components/LinearGradient';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-function Dashboard() {
+const Dashboard = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [name, setName] = useState('New Workout');
+  const [description, setDescription] = useState('Description...');
+
+  /* Toggling modal visibility */
+  const hideModal = () => {
+    resetState(),    
+    setModalVisible(false);
+  }
+  const showModal = () => setModalVisible(true);
+
+  /* Resetting input values on modal close */
+  const resetState = () => {
+    setName('New Workout')
+    setDescription('Description...')
+  }
+
+  /* Handling input changes */
+  const handleNameChange = text => setName(text);
+  const handleDescrChange = text => setDescription(text);
 
   return (
     <GradientView>
-      <Modal
-        animationType="slide"
-        visible={modalVisible}
-        transparent={true}
-      >
-        <View style={styles.modal}>
-          <TouchableOpacity
-            style={styles.transBtn}
-            onPress={() => setModalVisible(false)}
-          >
-            <Text>Modal appears!</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
       <View>
         <Text style={styles.header}>Dashboard</Text>
         <TouchableOpacity 
           style={styles.transBtn}
-          onPress={() => setModalVisible(true)}  
+          onPress={showModal}
         >
           <Text>Add Workout</Text>
         </TouchableOpacity>
+      </View>
+
+      <View>
+        <AddWorkoutModal
+          visible={modalVisible}
+          handleClose={hideModal}
+          handleName={handleNameChange}
+          handleDescription={handleDescrChange}
+          name={name}
+          description={description}
+        />
       </View>
     </GradientView>
   )
@@ -40,14 +57,6 @@ const styles = EStyleSheet.create({
     width: '100%',
     fontSize: '2rem',
     fontWeight: '600',
-  },
-  modal: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white'
   },
   transBtn: {
     height: '3rem',

@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 function GradientView({ children }) {
   return (
     <LinearGradient
-      colors={['rgba(201,95,188,1)', 'rgba(238,175,71,1)']}
+      colors={['rgba(97,164,199,1)', 'rgba(222,78,168,1)']}
       style={styles.wrapper}
     >
       <SafeAreaView>
@@ -18,8 +18,7 @@ function GradientView({ children }) {
 
 const styles = EStyleSheet.create({
   wrapper: {
-    height: '100%',
-    width: '100%',
+    flex: 1
   }
 })
 
