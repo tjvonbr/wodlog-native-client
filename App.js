@@ -25,6 +25,7 @@ EStyleSheet.build({
   $lightgray: '#dad9e1',
   $black: '#000000',
   $steel: '#4682B4',
+  $mint: '#3ad9a2',
   $rem: width > 340 ? 18 : 16
 })
 
