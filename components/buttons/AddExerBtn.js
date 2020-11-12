@@ -20,7 +20,7 @@ const styles = EStyleSheet.create({
     width: '3rem',
     height: '3rem',
     backgroundColor: '$steel',
-    flex: 1
+    flex: 1,
   },
   iconWrapper: {
     height: '100%',
