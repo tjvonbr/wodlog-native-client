@@ -1,56 +1,85 @@
-import React from 'react';
-import { TextInput, View } from 'react-native';
+import React, { useState } from 'react';
+import axios from 'axios';
+import { Alert, TextInput, View } from 'react-native';
 import Modal from 'react-native-modal';
 import IconButton from './buttons/IconButton';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-const AddWorkoutModal = ({ 
-    visible, handleClose, handleName, handleDescription, name, description 
-  }) => {
-    return (
-      <Modal 
-        isVisible={visible}
-        swipeDirection='down'
-        swipeThreshold={80}
-        onSwipeComplete={handleClose}
-      >
-        <View style={styles.mainModal}>
-          <View style={styles.inputWrapper}>
-            <TextInput 
-              style={styles.modalHeader}
-              onChangeText={handleName}
-              autoCapitalize='none'
-              caretHidden={false}
-            >
-              {name}
-            </TextInput>
-            <TextInput
-              style={styles.description}
-              onChangeText={handleDescription}
-              multiline={true}
-            >
-              {description}
-            </TextInput>
-          </View>
-          <View style={styles.exerciseWrapper}>
-            <IconButton
-              title="Add Exercise"
-              icon='plus'
-              size='20'
-              backgroundColor='#61a4c7'
-            />
-          </View>
-          <View style={styles.btnView}>
-            <IconButton 
-              title='Submit Workout'
-              icon='check'
-              size='20'
-              backgroundColor='#de4ea8'  
-            />
-          </View>
+const AddWorkoutModal = ({ visible, handleClose }) => {
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  /* isVisible state is for addExercise modal */
+  const [isVisible, SetIsVisible] = useState(false);
+
+  /* Resetting input values on modal close */
+  const resetState = () => {
+    setName('')
+    setDescription('')
+  }
+
+  /* Calls resetState fn and closes modal */
+  const resetInputs = () => {
+    handleClose();
+    resetState();
+  }
+
+  const addWorkout = () => {
+    return axios.post('http://192.168.1.174:3000/wods', {name, description})
+      .then(() => handleClose())
+      .catch(err => {
+        console.log(err);
+        Alert("Something went wrong!")
+      })
+  }
+
+  return (
+    <Modal 
+      isVisible={visible}
+      swipeDirection='down'
+      swipeThreshold={80}
+      onSwipeComplete={resetInputs}
+    >
+      <View style={styles.mainModal}>
+        <View style={styles.inputWrapper}>
+          <TextInput 
+            style={styles.modalHeader}
+            onChangeText={text => setName(text)}
+            autoCapitalize='none'
+            placeholder='New Workout'
+            placeholderTextColor='black'
+          >
+            {name}
+          </TextInput>
+          <TextInput
+            style={styles.description}
+            onChangeText={text => setDescription(text)}
+            multiline={true}
+            blurOnSubmit={true}
+            placeholder='Description...'
+          >
+            {description}
+          </TextInput>
         </View>
-      </Modal>
-    )
+        <View style={styles.exerciseWrapper}>
+          <IconButton
+            title="Add Exercise"
+            icon='plus'
+            size='20'
+            backgroundColor='#61a4c7'
+          />
+        </View>
+        <View style={styles.btnView}>
+          <IconButton 
+            title='Submit Workout'
+            icon='check'
+            size='20'
+            backgroundColor='#de4ea8'
+            handlePress={addWorkout}
+          />
+        </View>
+      </View>
+    </Modal>
+  )
 }
 
 const styles = EStyleSheet.create({

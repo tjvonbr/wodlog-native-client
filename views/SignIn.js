@@ -7,11 +7,10 @@ function SignIn({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  async function handleLogin() {
+  function handleLogin() {
     firebase.auth().signInWithEmailAndPassword(email, password)
-    .then(response => console.log(response))
+    .then(() => {})
     .catch(error => console.log(error))
-    navigation.navigate("Dashboard")
   }
 
   return (
@@ -29,6 +28,7 @@ function SignIn({ navigation }) {
         />
         <TextInput
           style={styles.input}
+          secureTextEntry={true}
           onChangeText={text => setPassword(text)}
           autoCapitalize='none'
           placeholder='Password'

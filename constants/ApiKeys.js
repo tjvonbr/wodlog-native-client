@@ -1,4 +1,4 @@
-export default {
+const ApiKeys = {
   FirebaseConfig: {
     apiKey: "AIzaSyB4_1O2pMlQl538YTZGSdGMfkydgM7C-K0",
     authDomain: "wodlog-b8ef2.firebaseapp.com",
@@ -10,3 +10,5 @@ export default {
     measurementId: "G-56J2Y0HJ77"
   },
 }
+
+export default ApiKeys;

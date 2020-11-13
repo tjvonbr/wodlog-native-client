@@ -3,28 +3,21 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import AddWorkoutModal from '../components/AddWorkoutModal';
 import GradientView from '../components/LinearGradient';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import * as firebase from 'firebase';
 
-const Dashboard = () => {
+const Dashboard = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [name, setName] = useState('New Workout');
-  const [description, setDescription] = useState('Description...');
 
   /* Toggling modal visibility */
-  const hideModal = () => {
-    resetState(),    
-    setModalVisible(false);
-  }
   const showModal = () => setModalVisible(true);
 
-  /* Resetting input values on modal close */
-  const resetState = () => {
-    setName('New Workout')
-    setDescription('Description...')
+  const hideModal = () => {
+    setModalVisible(false);
   }
 
-  /* Handling input changes */
-  const handleNameChange = text => setName(text);
-  const handleDescrChange = text => setDescription(text);
+  const signOut = () => firebase.auth().signOut()
+    .then(res => console.log("RESPONSE"))
+    .catch(err => console.log('ERROR'))
 
   return (
     <GradientView>
@@ -36,16 +29,18 @@ const Dashboard = () => {
         >
           <Text>Add Workout</Text>
         </TouchableOpacity>
+        <TouchableOpacity 
+          style={styles.transBtn}
+          onPress={signOut}
+        >
+          <Text>Sign Out</Text>
+        </TouchableOpacity>
       </View>
 
       <View>
         <AddWorkoutModal
           visible={modalVisible}
           handleClose={hideModal}
-          handleName={handleNameChange}
-          handleDescription={handleDescrChange}
-          name={name}
-          description={description}
         />
       </View>
     </GradientView>

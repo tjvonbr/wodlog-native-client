@@ -15,7 +15,6 @@ function RegisterUser({ navigation }) {
     firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(response => console.log(response))
     .catch(error => console.log(error))
-    navigation.navigate("Dashboard")
   }
 
   return (
@@ -52,6 +51,7 @@ function RegisterUser({ navigation }) {
         />
         <TextInput
           style={styles.input}
+          secureTextEntry={true}
           onChangeText={text => setPassword(text)}
           autoCapitalize='none'
           placeholder='Password'
