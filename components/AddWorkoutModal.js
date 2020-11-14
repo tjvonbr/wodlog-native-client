@@ -5,7 +5,7 @@ import Modal from 'react-native-modal';
 import IconButton from './buttons/IconButton';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-const AddWorkoutModal = ({ visible, handleClose }) => {
+const AddWorkoutModal = ({ handleClose, visible, workout }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   /* isVisible state is for addExercise modal */
@@ -23,13 +23,16 @@ const AddWorkoutModal = ({ visible, handleClose }) => {
     resetState();
   }
 
-  const addWorkout = () => {
-    return axios.post('http://192.168.1.174:3000/wods', {name, description})
-      .then(() => handleClose())
-      .catch(err => {
-        console.log(err);
-        Alert("Something went wrong!")
-      })
+  /* 
+    Update the workout's name and description while
+    adding instances of the wod_exercise for the previously
+    created WOD
+  */
+  const editWod = () => {
+    return axios.put(`http://192.168.1.174:3000/wods/${workout.id}`, 
+      {name, description})
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
   }
 
   return (
@@ -74,7 +77,7 @@ const AddWorkoutModal = ({ visible, handleClose }) => {
             icon='check'
             size='20'
             backgroundColor='#de4ea8'
-            handlePress={addWorkout}
+            handlePress={editWod}
           />
         </View>
       </View>
