@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Alert, TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 import Modal from 'react-native-modal';
 import IconButton from './buttons/IconButton';
 import EStyleSheet from 'react-native-extended-stylesheet';
@@ -31,6 +31,15 @@ const AddWorkoutModal = ({ handleClose, visible, workout }) => {
   const editWod = () => {
     return axios.put(`http://192.168.1.174:3000/wods/${workout.id}`, 
       {name, description})
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+  }
+
+  /* 
+    Adds an exercise to the workout 
+  */
+  const addExerciseToWod = () => {
+    return axios.post(`http://192.168.1.174:3000/wods`)
       .then(res => console.log(res))
       .catch(err => console.log(err))
   }
