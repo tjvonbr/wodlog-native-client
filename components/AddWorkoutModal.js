@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { config } from '../constants/env-variables';
 import { TextInput, View } from 'react-native';
 import Modal from 'react-native-modal';
 import IconButton from './buttons/IconButton';
@@ -10,6 +11,8 @@ const AddWorkoutModal = ({ handleClose, visible, workout }) => {
   const [description, setDescription] = useState('');
   /* isVisible state is for addExercise modal */
   const [isVisible, SetIsVisible] = useState(false);
+
+  const wodsApi = config.wods;
 
   /* Resetting input values on modal close */
   const resetState = () => {
@@ -29,7 +32,7 @@ const AddWorkoutModal = ({ handleClose, visible, workout }) => {
     created WOD
   */
   const editWod = () => {
-    return axios.put(`http://192.168.1.174:3000/wods/${workout.id}`, 
+    return axios.put(`${wodsApi}/${workout.id}`, 
       {name, description})
       .then(res => console.log(res))
       .catch(err => console.log(err))
@@ -39,9 +42,10 @@ const AddWorkoutModal = ({ handleClose, visible, workout }) => {
     Adds an exercise to the workout 
   */
   const addExerciseToWod = () => {
-    return axios.post(`http://192.168.1.174:3000/wods`)
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
+    return axios.post(
+      `${wodsApi}/${workout.id}/exercises`)
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
   }
 
   return (
