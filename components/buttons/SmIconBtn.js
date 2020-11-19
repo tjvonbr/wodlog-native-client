@@ -3,9 +3,12 @@ import { TouchableOpacity } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { FontAwesome5 } from '@expo/vector-icons';
 
-const SmIconBtn = () => {
+function SmIconBtn({ handlePress }) {
   return (
-    <TouchableOpacity style={styles.button}>
+    <TouchableOpacity 
+      style={styles.button}
+      onPress={handlePress}  
+    >
       <FontAwesome5 name='plus' color='#de4ea8' size={20} />
     </TouchableOpacity>
   )
