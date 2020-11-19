@@ -61,7 +61,6 @@ function App() {
               if (route.name === 'History') {
                 iconName = 'history'
                 size = 22
-                color: 'lightgray'
               } else if (route.name === 'Exercises') {
                 iconName = 'dumbbell'
                 size = 22
