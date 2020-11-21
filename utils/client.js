@@ -1,9 +1,16 @@
+import axios from 'axios';
+import { config } from '../constants/env-variables';
+
+// API base
+const apiUrl = config.dev;
+
 async function client(
   endpoint,
   {data, token, headers: customHeaders, ...customConfig} = {}
 ) {
   const config = {
     method: data ? "POST" : "GET",
+    url: endpoint,
     body: data ? JSON.stringify(data) : undefined,
     headers: {
       Authorization: token ? `Bearer ${token}` : undefined,
@@ -13,7 +20,7 @@ async function client(
     ...customConfig,
   }
 
-  return window.fetch(`${apiURL}/${endpoint}`, config)
+  return axios(`${apiUrl}/${endpoint}`, config)
     .then(async response => {
       if (response.status === 401) {
         console.log("Something went wrong!")

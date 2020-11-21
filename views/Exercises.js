@@ -8,7 +8,7 @@ import ExerciseListItem from '../components/ExerciseListItem';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 function Exercises() {
-  const [isVisible, setIsVisible] = useState(false);
+  const [addIsVisible, setAddIsVisible] = useState(false);
   const [exercises, setExercises] = useState([]);
   const [exerciseName, setExerciseName] = useState('');
   const [search, setSearch] = useState('');
@@ -34,25 +34,34 @@ function Exercises() {
       .then(res => {
         setExercises(res.data);
         Keyboard.dismiss();
-        hideModal();
+        hideAddModal();
       })
       .catch(err => console.log(err))
   }
 
   // Reset inputs if modal closes
-  function resetInputs() {
+  function resetAddInputs() {
     setExerciseName('');
-    hideModal();
+    hideAddModal();
+  }
+
+  function resetDelInputs() {
+    setExerciseName('')
+    hideDelModal();
   }
 
   // Renders exercise items in FlatList
   function renderExercise({ item }) {
-    return <ExerciseListItem item={item} />
-  }
+    return (
+      <ExerciseListItem 
+        item={item}
+        handlePress={showDelModal}
+      />
+    )}
 
   // Toggle modal -- TODO see if this can be exported from component file
-  const showModal = () => setIsVisible(true);
-  const hideModal = () => setIsVisible(false);
+  const showAddModal = () => setAddIsVisible(true);
+  const hideAddModal = () => setAddIsVisible(false);
 
   return (
     <SafeAreaView style={styles.wrapper}>
@@ -60,7 +69,7 @@ function Exercises() {
         <View style={styles.innerHeaderWrapper}>
           <View style={{ flex: 2 }}></View>
           <Text style={styles.headerText}>Exercises</Text>
-          <SmIconBtn handlePress={showModal} />
+          <SmIconBtn handlePress={showAddModal} />
         </View>
         <TextInput
           style={styles.input}
@@ -77,10 +86,10 @@ function Exercises() {
       </View>
       <View>
         <AddExerciseModal
-          visible={isVisible}
+          visible={addIsVisible}
           addExercise={addExercise}
           handleChange={handleChange}
-          reset={resetInputs}
+          reset={resetAddInputs}
         />
       </View>
     </SafeAreaView>
