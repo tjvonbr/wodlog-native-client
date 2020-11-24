@@ -4,32 +4,31 @@ import Modal from 'react-native-modal';
 import BaseButton from '../components/buttons/BaseBtn';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-function DeleteExerciseModal(
-  { deleteExercise, handleChange, reset, visible }
-    ) {
+function DeleteExerciseModal({ change, close, remove, submit, visible }) {
   return (
     <Modal
       isVisible={visible}
       swipeDirection='down'
       swipeThreshold={80}
-      onSwipeComplete={reset}
+      onSwipeComplete={close}
     >
       <View style={styles.mainModal}>
         <Text style={styles.headerText}>Edit Exercise</Text>
         <TextInput 
             style={styles.input}
-            onChangeText={handleChange}
+            onChangeText={change}
             placeholder='Edit name'
             placeholderTextColor='gray'
           />
           <BaseButton 
             backgroundColor='#61a4c7'
             title='Edit Exercise'
+            handlePress={submit}
           />
           <BaseButton
             backgroundColor="#ff4d4d"
             title='Delete Exercise'
-            handlePress={deleteExercise}
+            handlePress={remove}
           />
       </View>
     </Modal>

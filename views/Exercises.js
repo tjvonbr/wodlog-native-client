@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
+import store from '../store';
 import axios from 'axios';
 import { config } from '../constants/env-variables';
-import { FlatList, Keyboard, SafeAreaView, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, FlatList, Keyboard, SafeAreaView, Text, TextInput, View } from 'react-native';
 import AddExerciseModal from '../components/AddExerciseModal';
 import SmIconBtn from '../components/buttons/SmIconBtn';
 import ExerciseListItem from '../components/ExerciseListItem';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import { addExercise } from '../store';
 
 function Exercises() {
   const [addIsVisible, setAddIsVisible] = useState(false);
   const [exercises, setExercises] = useState([]);
   const [exerciseName, setExerciseName] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false);
   const [search, setSearch] = useState('');
 
   // Endpoint for HTTP request
@@ -18,15 +22,20 @@ function Exercises() {
 
   // Fetch exercises to pass along to exercises screen
   useEffect(() => {
-    axios.get(`${exercisesApi}/`)
-      .then(res => {
-        setExercises(res.data);
-      })
-      .catch(err => console.log(err))
-  }, [])
+    // axios.get(`${exercisesApi}/`)
+    //   .then(res => {
+    //     setExercises(res.data);
+    //     setIsLoading(false);
+    //   })
+    //   .catch(err => console.log(err))
+    console.log(store.getStore())
+  }, [refresh])
 
   // Handles typing into input field
   const handleChange = text => setExerciseName(text);
+
+  // Handles refresh of exercises
+  const handleRefresh = () => setRefresh(!refresh);
 
   // HTTP request to add exercise
   function addExercise() {
@@ -51,13 +60,8 @@ function Exercises() {
   }
 
   // Renders exercise items in FlatList
-  function renderExercise({ item }) {
-    return (
-      <ExerciseListItem 
-        item={item}
-        handlePress={showDelModal}
-      />
-    )}
+  const renderExercise = ({ item }) =>
+      <ExerciseListItem refresh={handleRefresh} item={item} />
 
   // Toggle modal -- TODO see if this can be exported from component file
   const showAddModal = () => setAddIsVisible(true);
@@ -78,11 +82,19 @@ function Exercises() {
         />
       </View>
       <View style={styles.flatListWrapper}>
-        <FlatList 
-          data={exercises}
-          renderItem={renderExercise}
-          keyExtractor={(item, index) => index.toString()}
-        />
+        { isLoading ? <ActivityIndicator /> : 
+          (exercises < 1) ? 
+          <View style={styles.emptyListWrapper}>
+            <Text style={styles.emptyList}>
+              You haven't added any exercises yet!
+            </Text>
+          </View> :
+          <FlatList 
+            data={exercises}
+            renderItem={renderExercise}
+            keyExtractor={(item) => item.id.toString()}
+          />
+        }
       </View>
       <View>
         <AddExerciseModal
@@ -91,6 +103,8 @@ function Exercises() {
           handleChange={handleChange}
           reset={resetAddInputs}
         />
+        
+
       </View>
     </SafeAreaView>
   )
@@ -137,7 +151,19 @@ const styles = EStyleSheet.create({
   },
   flatListWrapper: {
     width: '100%',
-    flex: 1
+  },
+  emptyListWrapper: {
+    width: '100%',
+    height: '100%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyList: {
+    width: '50%',
+    textAlign: 'center',
+    fontSize: '1rem',
+    fontWeight: '600'
   }
 })
 
