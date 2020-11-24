@@ -1,24 +1,44 @@
-import React, { useEffect, useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import axios from 'axios';
+import { config } from '../constants/env-variables';
+import { Keyboard, Text, TouchableOpacity, View } from 'react-native';
 import DeleteExerciseModal from '../components/DeleteExerciseModal';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-const ExerciseListItem = ({ item }) => {
+const ExerciseListItem = ({ item, refresh }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [exercise, setExercise] = useState(item);
+  const [exercise, setExercise] = useState(item.name);
+  const [input, setInput] = useState('');
 
-  useEffect(() => {
-    console.log(item)
-  }, [item])
+  // Endpoint for HTTP request
+  const exercisesApi = config.exercises;
 
+  // Toggle modal
   const showModal = () => setIsVisible(true);
   const hideModal = () => setIsVisible(false);
 
-  function deleteExercise() {
-    axios.delete(`${exercisesApi}/:${id}`)
+  // Handle change to input field
+  const handleChange = text => setInput(text);
+
+  // Edit name functionality
+  function editExercise() {
+    axios.put(`${exercisesApi}/${item.id}`, {name: input})
       .then(res => {
-        setExercises(res.data);
+        setExercise(res.data.name);
+        Keyboard.dismiss();
         hideModal();
+      })
+      .catch(err => {
+        console.log(err)
+      });
+  }
+
+  // Delete exercise
+  function deleteExercise() {
+    axios.delete(`${exercisesApi}/${item.id}`)
+      .then(() => {
+        hideModal();
+        refresh();
       })
       .catch(err => console.log(err))
   }
@@ -30,15 +50,16 @@ const ExerciseListItem = ({ item }) => {
       onLongPress={showModal}
     >
       <View style={styles.wrapper}>
-        <Text style={styles.itemText}>{item.name}</Text>
+        <Text style={styles.itemText}>{exercise}</Text>
       </View>
     </TouchableOpacity>
     <View>
-        <DeleteExerciseModal 
+        <DeleteExerciseModal
+          change={handleChange}
+          close={hideModal}
+          remove={deleteExercise}
+          submit={editExercise}
           visible={isVisible}
-          handleClose={hideModal}
-          handleChange={handleChange}
-          reset={resetDelInputs}
         />
       </View>
     </View>
