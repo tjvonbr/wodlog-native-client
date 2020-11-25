@@ -4,11 +4,12 @@ import BoxCalendar from './views/BoxCalendar';
 import Dashboard from './views/Dashboard';
 import Exercises from './views/Exercises';
 import History from './views/History';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
 import RegisterUser from './views/RegisterUser';
 import SignIn from './views/SignIn';
 import Splash from './views/Splash';
-import store from './store';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -16,11 +17,14 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import { Dimensions } from 'react-native';
 import ApiKeys from './constants/ApiKeys';
 import { FontAwesome5 } from '@expo/vector-icons';
+import ExerciseReducer from './reducers/ExercisesReducer';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 let { width } = Dimensions.get('window')
+
+const store = createStore(ExerciseReducer, applyMiddleware(thunk))
 
 EStyleSheet.build({
   $white: '#fff',
@@ -31,7 +35,7 @@ EStyleSheet.build({
   $rem: width > 340 ? 18 : 16
 })
 
-function App() {
+function App({ fetchExercises }) {
   const [isLoading, setIsLoading] = useState(true);
   const [signedIn, setSignedIn] = useState(false);
 

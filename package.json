@@ -35,10 +35,12 @@
     "react-query": "^2.26.3",
     "react-redux": "^7.2.2",
     "react-test-renderer": "^17.0.1",
+    "redux": "^4.0.5",
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
-    "@babel/core": "~7.9.0"
+    "@babel/core": "~7.9.0",
+    "msw": "^0.22.3"
   },
   "private": true
 }

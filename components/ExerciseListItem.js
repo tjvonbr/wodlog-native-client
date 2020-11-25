@@ -1,37 +1,15 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { config } from '../constants/env-variables';
-import { Keyboard, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import DeleteExerciseModal from '../components/DeleteExerciseModal';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-const ExerciseListItem = ({ item, refresh }) => {
+const ExerciseListItem = ({ editExercise, item, refresh }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [exercise, setExercise] = useState(item.name);
-  const [input, setInput] = useState('');
-
-  // Endpoint for HTTP request
-  const exercisesApi = config.exercises;
 
   // Toggle modal
   const showModal = () => setIsVisible(true);
   const hideModal = () => setIsVisible(false);
-
-  // Handle change to input field
-  const handleChange = text => setInput(text);
-
-  // Edit name functionality
-  function editExercise() {
-    axios.put(`${exercisesApi}/${item.id}`, {name: input})
-      .then(res => {
-        setExercise(res.data.name);
-        Keyboard.dismiss();
-        hideModal();
-      })
-      .catch(err => {
-        console.log(err)
-      });
-  }
 
   // Delete exercise
   function deleteExercise() {
@@ -55,10 +33,8 @@ const ExerciseListItem = ({ item, refresh }) => {
     </TouchableOpacity>
     <View>
         <DeleteExerciseModal
-          change={handleChange}
-          close={hideModal}
-          remove={deleteExercise}
-          submit={editExercise}
+          hide={hideModal}
+          item={item}
           visible={isVisible}
         />
       </View>
