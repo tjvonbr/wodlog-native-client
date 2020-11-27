@@ -7,6 +7,7 @@ import BaseButton from '../components/buttons/BaseBtn';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 function DeleteExerciseModal({ editExercise, hide, item, visible }) {
+  console.log("ITEM FROM EDIT/DELETE MODAL", item)
   const [input, setInput] = useState('');
 
   // Handle change to input field

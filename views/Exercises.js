@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { connect, useDispatch } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import { ActivityIndicator, FlatList, SafeAreaView, Text, TextInput, View } from 'react-native'
 import AddExerciseModal from '../components/AddExerciseModal'
 import SmIconBtn from '../components/buttons/SmIconBtn'
@@ -7,18 +7,21 @@ import ExerciseListItem from '../components/ExerciseListItem'
 import { fetchExercises } from '../actions/actions'
 import EStyleSheet from 'react-native-extended-stylesheet'
 
-function Exercises({ exercises, fetchExercises, isLoading }) {
+function Exercises({ fetchExercises, isLoading }) {
   const [isVisible, setIsVisible] = useState(false)
   const [search, setSearch] = useState('')
-
-  const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(fetchExercises)
   }, [dispatch])
 
+  const dispatch = useDispatch()
+  const exercises = useSelector(state => state.exercises)
+
   // Renders exercise items in FlatList
-  const renderExercise = ({ item }) => <ExerciseListItem item={item} />
+  const renderExercise = ({ item }) => {
+    return <ExerciseListItem item={item} />
+  }
 
   // Toggle modal -- TODO see if this can be exported from component file
   const showModal = () => setIsVisible(true)
@@ -49,7 +52,7 @@ function Exercises({ exercises, fetchExercises, isLoading }) {
           <FlatList 
             data={exercises}
             renderItem={renderExercise}
-            keyExtractor={(item, index) => index.toString()}
+            keyExtractor={(item) => item.id.toString()}
           />
         }
       </View>
