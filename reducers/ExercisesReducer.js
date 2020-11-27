@@ -55,10 +55,10 @@ const exercisesReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        exercises: state.exercises.map(item => {
-          item.id === action.payload.id ? 
+        exercises: state.exercises.map(exercise => {
+          return exercise.id === action.payload.id ? 
           action.payload : 
-          item
+          exercise
         })
       }
     case EDIT_EXERCISE_FAIL:
@@ -67,13 +67,13 @@ const exercisesReducer = (state = initialState, action) => {
         isLoading: false,
         error: action.payload
       }
-    case DEL_EXERCISE_FAIL:
+    case DEL_EXERCISE_SUCCESS:
       return {
         ...state,
         isLoading: false,
-        exercises: state.exercises.filter(
-          exercise => exercise.id != action.payload
-        )
+        exercises: state.exercises.filter(exercise => {
+          return exercise.id != action.payload
+        })
       }
     case DEL_EXERCISE_FAIL:
       return {
