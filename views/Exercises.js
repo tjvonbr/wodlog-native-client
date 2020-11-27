@@ -11,17 +11,12 @@ function Exercises({ fetchExercises, isLoading }) {
   const [isVisible, setIsVisible] = useState(false)
   const [search, setSearch] = useState('')
 
-  useEffect(() => {
-    dispatch(fetchExercises)
-  }, [dispatch])
-
   const dispatch = useDispatch()
   const exercises = useSelector(state => state.exercises)
 
-  // Renders exercise items in FlatList
-  const renderExercise = ({ item }) => {
-    return <ExerciseListItem item={item} />
-  }
+  useEffect(() => {
+    dispatch(fetchExercises)
+  }, [dispatch])
 
   // Toggle modal -- TODO see if this can be exported from component file
   const showModal = () => setIsVisible(true)
@@ -51,8 +46,11 @@ function Exercises({ fetchExercises, isLoading }) {
           </View> :
           <FlatList 
             data={exercises}
-            renderItem={renderExercise}
-            keyExtractor={(item) => item.id.toString()}
+            extraData={exercises}
+            keyExtractor={(item, index) => item.id.toString()}
+            renderItem={({ item }) => {
+              return <ExerciseListItem item={item} />
+            }}
           />
         }
       </View>

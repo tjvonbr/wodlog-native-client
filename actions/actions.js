@@ -28,7 +28,6 @@ export const addExercise = exercise => dispatch => {
   dispatch({ type: EXERCISES_START })
   axios.post(`${exerciseApi}`, { name: exercise })
     .then(res => {
-      console.log(res.data);
       dispatch({ type: ADD_EXERCISE_SUCCESS, payload: res.data })
     })
     .catch(err => {
@@ -40,12 +39,10 @@ export const addExercise = exercise => dispatch => {
 export const EDIT_EXERCISE_SUCCESS = 'EDIT_EXERCISE_SUCCESS'
 export const EDIT_EXERCISE_FAIL = 'EDIT_EXERCISE_FAIL'
 
-export const editExercise = (changes, id) => dispatch => {
-  console.log("HITTING EDIT EXERCISE ACTION", [changes, id])
+export const editExercise = (id, changes) => dispatch => {
   dispatch({ type: EXERCISES_START })
   axios.put(`${exerciseApi}/${id}`, { name: changes })
     .then(res => {
-      console.log(res.data);
       dispatch({ type: EDIT_EXERCISE_SUCCESS, payload: res.data })
     })
     .catch(err => {
@@ -61,8 +58,7 @@ export const deleteExercise = id => dispatch => {
   dispatch({ type: EXERCISES_START })
     axios.delete(`${exerciseApi}/${id}`)
       .then(res => {
-        console.log(res.data);
-        dispatch({ type: DEL_EXERCISE_SUCCESS, payload: res.data })
+        dispatch({ type: DEL_EXERCISE_SUCCESS, payload: id })
       })
       .catch(err => {
         console.log(err)

@@ -4,8 +4,6 @@ import DeleteExerciseModal from '../components/DeleteExerciseModal';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 const ExerciseListItem = ({ item, refresh }) => {
-  console.log("EXERCISE LIST ITEM", item)
-
   const [isVisible, setIsVisible] = useState(false);
   const [exercise, setExercise] = useState(item.name);
 

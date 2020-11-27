@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import { connect } from 'react-redux';
-import { editExercise } from '../actions/actions';
+import { editExercise, deleteExercise } from '../actions/actions';
 import Modal from 'react-native-modal';
 import BaseButton from '../components/buttons/BaseBtn';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-function DeleteExerciseModal({ editExercise, hide, item, visible }) {
-  console.log("ITEM FROM EDIT/DELETE MODAL", item)
+function DeleteExerciseModal(
+  { editExercise, deleteExercise, hide, item, visible }
+  ) {
   const [input, setInput] = useState('');
 
   // Handle change to input field
@@ -15,7 +16,11 @@ function DeleteExerciseModal({ editExercise, hide, item, visible }) {
 
   // Edit name functionality
   function handleSubmit() {
-    editExercise(input, item.id)
+    editExercise(item.id, input)
+  }
+
+  function handleDelete() {
+    deleteExercise(item.id)
   }
 
   function handleClose() {
@@ -45,7 +50,7 @@ function DeleteExerciseModal({ editExercise, hide, item, visible }) {
           <BaseButton
             backgroundColor="#ff4d4d"
             title='Delete Exercise'
-            handlePress={() => console.log("REMOVE BUTTON HIT!")}
+            handlePress={handleDelete}
           />
       </View>
     </Modal>
@@ -99,5 +104,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { editExercise }
+  { editExercise, deleteExercise }
 )(DeleteExerciseModal);
