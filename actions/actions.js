@@ -12,7 +12,6 @@ export const fetchExercises = () => dispatch => {
   dispatch({ type: EXERCISES_START })
   axios.get(`${exerciseApi}`)
     .then(res => {
-      console.log("FETCH DATA SUCCESS", res.data);
       dispatch({ type: FETCH_EXERCISES_SUCCESS, payload: res.data })
     })
     .catch(err => {
@@ -42,6 +41,7 @@ export const EDIT_EXERCISE_SUCCESS = 'EDIT_EXERCISE_SUCCESS'
 export const EDIT_EXERCISE_FAIL = 'EDIT_EXERCISE_FAIL'
 
 export const editExercise = (changes, id) => dispatch => {
+  console.log("HITTING EDIT EXERCISE ACTION", [changes, id])
   dispatch({ type: EXERCISES_START })
   axios.put(`${exerciseApi}/${id}`, { name: changes })
     .then(res => {
