@@ -1,34 +1,30 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { Text, TouchableOpacity, View } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import AddWorkoutModal from '../components/AddWorkoutModal';
-import GradientView from '../components/LinearGradient';
-import EStyleSheet from 'react-native-extended-stylesheet';
-import * as firebase from 'firebase';
+import React, { useState } from 'react'
+import axios from 'axios'
+import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import AddWorkoutModal from '../components/AddWorkoutModal'
+import TransparentView from '../components/TransparentView'
+import EStyleSheet from 'react-native-extended-stylesheet'
+import * as firebase from 'firebase'
 
-const Dashboard = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [workout, setWorkout] = useState(null);
+const Dashboard = ({ navigation }) => {
+  const [isVisible, setIsVisible] = useState(false)
+  const [workout, setWorkout] = useState(null)
 
   /* Toggling modal visibility */
-  const showModal = () => setModalVisible(true);
-
-  const hideModal = () => {
-    setModalVisible(false);
-  }
+  const showModal = () => setIsVisible(true)
+  const hideModal = () => setIsVisible(false)
 
   /* Add workout and open modal */
-  const addWorkout = () => {
-    return axios.post('http://192.168.1.174:3000/wods')
-      .then(res => {
-        setWorkout(res.data);
-        showModal();
-      })
-      .catch(err => {
-        console.log(err);
-        Alert("Something went wrong!")
-      })
+  const addWorkout =  async () => {
+    try {
+      const res = axios.post('http://192.168.1.174:3000/wods')
+      setWorkout(res.data)
+      navigation.navigate('Add Workout')
+    }
+    catch(err) {
+      console.log(err)
+    }
   }
 
   /* 
@@ -40,45 +36,46 @@ const Dashboard = () => {
     .catch(err => console.log('ERROR', err))
 
   return (
-    <GradientView>
-      <View>
-        <Text style={styles.header}>Dashboard</Text>
-        <TouchableOpacity 
-          style={styles.transBtn}
+    <SafeAreaView style={styles.wrapper}>
+      <Text style={styles.header}>Welcome!</Text>
+      <View style={styles.workoutWrapper}>
+        <TouchableOpacity
+          style={styles.addWorkout}
           onPress={addWorkout}
         >
           <Text>Add Workout</Text>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={styles.transBtn}
-          onPress={signOut}
-        >
-          <Text>Sign Out</Text>
         </TouchableOpacity>
       </View>
 
       <View>
         <AddWorkoutModal
-          visible={modalVisible}
+          visible={isVisible}
           handleClose={hideModal}
           workout={workout}
         />
       </View>
-    </GradientView>
+    </SafeAreaView>
   )
 }
 
 const styles = EStyleSheet.create({
+  wrapper: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
   header: {
-    width: '100%',
-    fontSize: '2rem',
+    width: '90%',
+    marginTop: '3%',
+    fontSize: '1.6rem',
     fontWeight: '600',
   },
-  transBtn: {
-    height: '3rem',
+  workoutWrapper: {
+    width: '100%',
+  },
+  addWorkout: {
+    height: '10rem',
     width: '50%',
-    borderColor: 'black',
-    borderWidth: 2,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -86,7 +83,11 @@ const styles = EStyleSheet.create({
     borderBottomRightRadius: 7,
     borderBottomLeftRadius: 7,
     borderTopLeftRadius: 7,
-    opacity: 1
+    shadowColor: '$lightgray',
+    backgroundColor: '#869add',
+    shadowOffset: {width: 3, height: 3},
+    shadowRadius: 2,
+    shadowOpacity: 1
   }
 })
 

@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Text, TextInput, View } from 'react-native';
+import { Dimensions, Text, TextInput, View } from 'react-native';
 import { addExercise } from '../actions/actions';
 import Modal from 'react-native-modal';
 import BaseButton from '../components/buttons/BaseBtn';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 function AddExerciseModal({ addExercise, hide, visible }) {
-  const [exercise, setExercise] = useState('');
+  const [exercise, setExercise] = useState('')
+
+  const { width } = Dimensions.get('window')
 
   // Handles typing into input field
   const handleChange = text => setExercise(text);
@@ -20,10 +22,14 @@ function AddExerciseModal({ addExercise, hide, visible }) {
 
   return (
     <Modal
+      deviceWidth={width}
       isVisible={visible}
       swipeDirection='down'
       swipeThreshold={80}
       onSwipeComplete={hide}
+      onBackdropPress={() => hide()}
+      hideModalContentWhileAnimating={true}
+      style={{margin: 0}}
     >
       <View style={styles.mainModal}>
           <Text style={styles.headerText}>New Exercise</Text>
