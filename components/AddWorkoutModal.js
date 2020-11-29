@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { config } from '../constants/env-variables';
-import { TextInput, View } from 'react-native';
-import Modal from 'react-native-modal';
-import IconButton from './buttons/IconButton';
-import EStyleSheet from 'react-native-extended-stylesheet';
+import React, { useState } from 'react'
+import axios from 'axios'
+import { config } from '../constants/env-variables'
+import { TextInput, View } from 'react-native'
+import Modal from 'react-native-modal'
+import IconButton from './buttons/IconButton'
+import EStyleSheet from 'react-native-extended-stylesheet'
 
 const AddWorkoutModal = ({ handleClose, visible, workout }) => {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  /* isVisible state is for addExercise modal */
-  const [isVisible, SetIsVisible] = useState(false);
+  const [description, setDescription] = useState('')
+  const [isVisible, SetIsVisible] = useState(false)
+  const [name, setName] = useState('')
+  const [showExercise, setShowExercise] = useState(false)
 
-  const wodsApi = config.wods;
+  const wodsApi = config.wods
+
+  const showExerciseModal = () => setShowExercise(true)
+  const hideExerciseModal = () => setShowExercise(false)
 
   /* Resetting input values on modal close */
   const resetState = () => {
@@ -22,8 +25,8 @@ const AddWorkoutModal = ({ handleClose, visible, workout }) => {
 
   /* Calls resetState fn and closes modal */
   const resetInputs = () => {
-    handleClose();
-    resetState();
+    handleClose()
+    resetState()
   }
 
   /* 
@@ -54,6 +57,7 @@ const AddWorkoutModal = ({ handleClose, visible, workout }) => {
       swipeDirection='down'
       swipeThreshold={80}
       onSwipeComplete={resetInputs}
+      style={{ margin: 0 }}
     >
       <View style={styles.mainModal}>
         <View style={styles.inputWrapper}>
@@ -82,6 +86,7 @@ const AddWorkoutModal = ({ handleClose, visible, workout }) => {
             icon='plus'
             size='20'
             backgroundColor='#61a4c7'
+            handlePress={showExerciseModal}
           />
         </View>
         <View style={styles.btnView}>
@@ -100,11 +105,11 @@ const AddWorkoutModal = ({ handleClose, visible, workout }) => {
 
 const styles = EStyleSheet.create({
   mainModal: {
-    flex: 1,
+    height:'90%',
+    marginTop: '10%',
     flexDirection: 'column',
     alignItems: 'center',
     backgroundColor: 'white',
-    marginTop: '5%',
     borderTopRightRadius: 7,
     borderBottomRightRadius: 7,
     borderBottomLeftRadius: 7,
@@ -139,13 +144,6 @@ const styles = EStyleSheet.create({
     width: '90%',
     height: '65%',
     padding: '1rem',
-    borderStyle: 'solid',
-    borderColor: '$lightgray',
-    borderWidth: 1,
-    borderTopRightRadius: 7,
-    borderBottomRightRadius: 7,
-    borderBottomLeftRadius: 7,
-    borderTopLeftRadius: 7,
   },  
   btnView: {
     height: '15%',
@@ -156,4 +154,4 @@ const styles = EStyleSheet.create({
   },
 })
 
-export default AddWorkoutModal;
+export default AddWorkoutModal

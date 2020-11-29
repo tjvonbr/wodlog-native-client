@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import * as firebase from 'firebase';
+import AddWod from './views/AddWod'
 import BoxCalendar from './views/BoxCalendar';
-import Dashboard from './views/Dashboard';
 import Exercises from './views/Exercises';
 import History from './views/History';
 import { createStore, applyMiddleware } from 'redux';
@@ -35,7 +35,7 @@ EStyleSheet.build({
   $rem: width > 340 ? 18 : 16
 })
 
-function App({ fetchExercises }) {
+function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [signedIn, setSignedIn] = useState(false);
 
@@ -77,7 +77,7 @@ function App({ fetchExercises }) {
                 } else if (route.name === 'Exercises') {
                   iconName = 'dumbbell'
                   size = 22
-                } else if (route.name === 'Dashboard') {
+                } else if (route.name === 'AddWod') {
                   iconName = 'home'
                   size = 22
                 } else if (route.name === 'Calendar') {
@@ -90,7 +90,7 @@ function App({ fetchExercises }) {
           >
             <Tab.Screen name='Calendar' component={BoxCalendar} />
             <Tab.Screen name='History' component={History} />
-            <Tab.Screen name='Dashboard' component={Dashboard} />
+            <Tab.Screen name='AddWod' component={AddWod} />
             <Tab.Screen name='Exercises' component={Exercises} />
           </Tab.Navigator>
         ) : (
