@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import axios from 'axios'
 import { config } from '../constants/env-variables'
 import { FlatList, View } from 'react-native'
-import ExerciseListItem from '../components/ExerciseListItem'
+import SelectableListItem from '../components/SelectableListItem'
 import Modal from 'react-native-modal'
 import EStyleSheet from 'react-native-extended-stylesheet'
 
@@ -67,8 +67,8 @@ const AddWorkoutModal = ({ handleClose, visible, workout }) => {
             data={exercises}
             extraData={exercises}
             keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => {
-              return <ExerciseListItem item={item} />
+            renderItem={({ index, item }) => {
+              return <SelectableListItem index={index} item={item} />
             }}
           >
           </FlatList>
@@ -80,7 +80,7 @@ const AddWorkoutModal = ({ handleClose, visible, workout }) => {
 
 const styles = EStyleSheet.create({
   flatListWrapper: {
-    width: '100%'
+    width: '100%' 
   },
   mainModal: {
     height:'75%',

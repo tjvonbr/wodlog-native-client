@@ -14,9 +14,9 @@ function Exercises({ fetchExercises, isLoading }) {
   const dispatch = useDispatch()
   const exercises = useSelector(state => state.exercises)
 
-  useEffect(() => {
-    dispatch(fetchExercises)
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(fetchExercises)
+  // }, [dispatch])
 
   // Toggle modal -- TODO see if this can be exported from component file
   const showModal = () => setIsVisible(true)
