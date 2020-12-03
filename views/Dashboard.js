@@ -1,14 +1,22 @@
-import React, { useState } from 'react'
-import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { connect, useDispatch } from 'react-redux'
+import { fetchExercises } from '../actions/exercise-actions'
 import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import AddWorkoutModal from '../components/AddWorkoutModal'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import * as firebase from 'firebase'
 
-const Dashboard = ({ navigation }) => {
+const Dashboard = ({ fetchExercises, isLoading, navigation }) => {
   const [isVisible, setIsVisible] = useState(false)
   const [workout, setWorkout] = useState(null)
+
+  const dispatch = useDispatch()
+
+  // This is the best place to fetch global state for now...
+  useEffect(() => {
+    dispatch(fetchExercises)
+  }, [dispatch])
 
   /* Toggling modal visibility */
   const showModal = () => setIsVisible(true)
@@ -78,4 +86,15 @@ const styles = EStyleSheet.create({
   }
 })
 
-export default Dashboard;
+function mapStateToProps(state) {
+  return {
+    exercises: state.exercises,
+    isLoading: state.isLoading
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  { fetchExercises }
+)
+(Dashboard)

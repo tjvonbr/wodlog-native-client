@@ -1,26 +1,27 @@
-import React, { useState } from 'react';
-import * as firebase from 'firebase';
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import * as firebase from 'firebase'
 import AddWod from './views/AddWod'
-import BoxCalendar from './views/BoxCalendar';
-import Exercises from './views/Exercises';
-import History from './views/History';
-import { createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
-import RegisterUser from './views/RegisterUser';
-import SignIn from './views/SignIn';
-import Splash from './views/Splash';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import EStyleSheet from 'react-native-extended-stylesheet';
-import { Dimensions } from 'react-native';
-import ApiKeys from './constants/ApiKeys';
-import { FontAwesome5 } from '@expo/vector-icons';
-import ExerciseReducer from './reducers/ExercisesReducer';
+import BoxCalendar from './views/BoxCalendar'
+import Exercises from './views/Exercises'
+import History from './views/History'
+import { createStore, applyMiddleware } from 'redux'
+import { Provider } from 'react-redux'
+import thunk from 'redux-thunk'
+import RegisterUser from './views/RegisterUser'
+import SignIn from './views/SignIn'
+import Splash from './views/Splash'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import EStyleSheet from 'react-native-extended-stylesheet'
+import { Dimensions } from 'react-native'
+import ApiKeys from './constants/ApiKeys'
+import { FontAwesome5 } from '@expo/vector-icons'
+import ExerciseReducer from './reducers/ExercisesReducer'
 
-const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator()
+const Tab = createBottomTabNavigator()
 
 let { width } = Dimensions.get('window')
 
@@ -77,7 +78,7 @@ function App() {
                 } else if (route.name === 'Exercises') {
                   iconName = 'dumbbell'
                   size = 22
-                } else if (route.name === 'AddWod') {
+                } else if (route.name === 'Dashboard') {
                   iconName = 'home'
                   size = 22
                 } else if (route.name === 'Calendar') {
@@ -90,7 +91,7 @@ function App() {
           >
             <Tab.Screen name='Calendar' component={BoxCalendar} />
             <Tab.Screen name='History' component={History} />
-            <Tab.Screen name='AddWod' component={AddWod} />
+            <Tab.Screen name='Dashboard' component={AddWod} />
             <Tab.Screen name='Exercises' component={Exercises} />
           </Tab.Navigator>
         ) : (

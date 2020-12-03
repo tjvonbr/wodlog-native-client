@@ -23,15 +23,15 @@ const ExerciseListItem = ({ item, refresh }) => {
 
   return (
     <View>
-    <TouchableOpacity
-      activeOpacity={0.1}
-      onLongPress={showModal}
-    >
-      <View style={styles.wrapper}>
-        <Text style={styles.itemText}>{exercise}</Text>
-      </View>
-    </TouchableOpacity>
-    <View>
+      <TouchableOpacity
+        activeOpacity={0.1}
+        onLongPress={showModal}
+      >
+        <View style={styles.wrapper}>
+          <Text style={styles.itemText}>{exercise}</Text>
+        </View>
+      </TouchableOpacity>
+      <View>
         <DeleteExerciseModal
           hide={hideModal}
           item={item}
