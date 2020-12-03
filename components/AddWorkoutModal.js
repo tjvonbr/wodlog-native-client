@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import axios from 'axios'
 import { config } from '../constants/env-variables'
-import { TextInput, View } from 'react-native'
+import { FlatList, View } from 'react-native'
+import ExerciseListItem from '../components/ExerciseListItem'
 import Modal from 'react-native-modal'
-import IconButton from './buttons/IconButton'
 import EStyleSheet from 'react-native-extended-stylesheet'
 
 const AddWorkoutModal = ({ handleClose, visible, workout }) => {
@@ -12,6 +13,7 @@ const AddWorkoutModal = ({ handleClose, visible, workout }) => {
   const [name, setName] = useState('')
   const [showExercise, setShowExercise] = useState(false)
 
+  const exercises = useSelector(state => state.exercises)
   const wodsApi = config.wods
 
   const showExerciseModal = () => setShowExercise(true)
@@ -57,46 +59,19 @@ const AddWorkoutModal = ({ handleClose, visible, workout }) => {
       swipeDirection='down'
       swipeThreshold={80}
       onSwipeComplete={resetInputs}
-      style={{ margin: 0 }}
+      onBackdropPress={() => handleClose()}
     >
       <View style={styles.mainModal}>
-        <View style={styles.inputWrapper}>
-          <TextInput 
-            style={styles.modalHeader}
-            onChangeText={text => setName(text)}
-            autoCapitalize='none'
-            placeholder='New Workout'
-            placeholderTextColor='black'
+        <View style={styles.flatListWrapper}>
+          <FlatList 
+            data={exercises}
+            extraData={exercises}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => {
+              return <ExerciseListItem item={item} />
+            }}
           >
-            {name}
-          </TextInput>
-          <TextInput
-            style={styles.description}
-            onChangeText={text => setDescription(text)}
-            multiline={true}
-            blurOnSubmit={true}
-            placeholder='Description...'
-          >
-            {description}
-          </TextInput>
-        </View>
-        <View style={styles.exerciseWrapper}>
-          <IconButton
-            title="Add Exercise"
-            icon='plus'
-            size='20'
-            backgroundColor='#61a4c7'
-            handlePress={showExerciseModal}
-          />
-        </View>
-        <View style={styles.btnView}>
-          <IconButton 
-            title='Submit Workout'
-            icon='check'
-            size='20'
-            backgroundColor='#de4ea8'
-            handlePress={editWod}
-          />
+          </FlatList>
         </View>
       </View>
     </Modal>
@@ -104,8 +79,11 @@ const AddWorkoutModal = ({ handleClose, visible, workout }) => {
 }
 
 const styles = EStyleSheet.create({
+  flatListWrapper: {
+    width: '100%'
+  },
   mainModal: {
-    height:'90%',
+    height:'75%',
     marginTop: '10%',
     flexDirection: 'column',
     alignItems: 'center',

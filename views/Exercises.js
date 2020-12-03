@@ -4,7 +4,7 @@ import { ActivityIndicator, FlatList, SafeAreaView, Text, TextInput, View } from
 import AddExerciseModal from '../components/AddExerciseModal'
 import SmIconBtn from '../components/buttons/SmIconBtn'
 import ExerciseListItem from '../components/ExerciseListItem'
-import { fetchExercises } from '../actions/actions'
+import { fetchExercises } from '../actions/exercise-actions'
 import EStyleSheet from 'react-native-extended-stylesheet'
 
 function Exercises({ fetchExercises, isLoading }) {
