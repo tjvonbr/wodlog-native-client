@@ -8,7 +8,7 @@ import {
   EDIT_EXERCISE_FAIL,
   DEL_EXERCISE_SUCCESS,
   DEL_EXERCISE_FAIL
-} from '../actions/actions';
+} from '../actions/exercise-actions';
 
 const initialState = {
   exercises: [],

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import { connect } from 'react-redux';
-import { editExercise, deleteExercise } from '../actions/actions';
+import { editExercise, deleteExercise } from '../actions/exercise-actions';
 import Modal from 'react-native-modal';
 import BaseButton from '../components/buttons/BaseBtn';
 import EStyleSheet from 'react-native-extended-stylesheet';

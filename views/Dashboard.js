@@ -3,7 +3,6 @@ import axios from 'axios'
 import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import AddWorkoutModal from '../components/AddWorkoutModal'
-import TransparentView from '../components/TransparentView'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import * as firebase from 'firebase'
 
@@ -14,18 +13,6 @@ const Dashboard = ({ navigation }) => {
   /* Toggling modal visibility */
   const showModal = () => setIsVisible(true)
   const hideModal = () => setIsVisible(false)
-
-  /* Add workout and open modal */
-  const addWorkout =  async () => {
-    try {
-      const res = axios.post('http://192.168.1.174:3000/wods')
-      setWorkout(res.data)
-      navigation.navigate('Add Workout')
-    }
-    catch(err) {
-      console.log(err)
-    }
-  }
 
   /* 
     Signout and clear local storage 
@@ -41,7 +28,7 @@ const Dashboard = ({ navigation }) => {
       <View style={styles.workoutWrapper}>
         <TouchableOpacity
           style={styles.addWorkout}
-          onPress={addWorkout}
+          onPress={() => navigation.navigate("Add Workout")}
         >
           <Text>Add Workout</Text>
         </TouchableOpacity>
