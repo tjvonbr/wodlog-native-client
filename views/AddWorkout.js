@@ -1,27 +1,28 @@
 import React, { useState } from 'react'
-import { Modal, SafeAreaView, Text, TextInput, View } from 'react-native'
+import { FlatList, SafeAreaView, Text, TextInput, View } from 'react-native'
 import AddWorkoutModal from '../components/AddWorkoutModal'
+import DropDownPicker from 'react-native-dropdown-picker'
 import SmIconBtn from '../components/buttons/SmIconBtn'
 import EStyleSheet from 'react-native-extended-stylesheet'
-import { ScrollView } from 'react-native-gesture-handler'
+import WodExerciseListItem from '../components/WodExerciseListItem'
 
 const AddWorkout = () => {
+  const [exercises, setExercises] = useState([])
   const [isVisible, setIsVisible] = useState(false)
+  const [scoringStyle, setScoringStyle] = useState(null)
   const [workoutName, setWorkoutName] = useState('')
   const [workoutDescription, setWorkoutDescription] = useState('')
 
+  const addExercise = exercise => {
+    setExercises([...exercises, exercise])
+  }
+
+  const removeExercise = exercise => {
+    setExercises(exercises.filter(item => item != exercise))
+  }
+
   const showModal = () => setIsVisible(true)
   const hideModal = () => setIsVisible(false)
-
-  const addWorkout =  async () => {
-    try {
-      const res =  await axios.post('http://192.168.1.174:3000/wods')
-      setWorkout(res.data)
-    }
-    catch(err) {
-      console.log(err)
-    }
-  }
 
   return (
     <SafeAreaView style={styles.mainWrapper}>
@@ -46,25 +47,49 @@ const AddWorkout = () => {
             {workoutDescription}
           </TextInput>
       </View>
+      <View style={styles.styleWrapper}>
+        <Text style={styles.scoringHeader}>Scoring Style</Text>
+        <DropDownPicker 
+          items={[
+            {label: 'USA', value: 'USA'},
+            {label: 'UK', value: 'UK'},
+            {label: 'France', value: 'France'}
+          ]}
+          defaultValue={scoringStyle}
+          containerStyle={styles.dropdownContainer }
+          onChangeItem={item => setScoringStyle(item.value)}
+        />
+      </View>
       <View style={styles.addWrapper}>
         <View style={styles.addHeaderWrapper}>
-          <Text style={styles.addHeader}>Exercises</Text>
+          <Text style={styles.addHeaders}>Exercises</Text>
           <SmIconBtn handlePress={showModal} />
         </View>
-        <ScrollView>
-
-        </ScrollView>
+        <View style={{ width: '100%' }}>
+          <FlatList
+            data={exercises}
+            extraData={exercises}
+            keyExtractor={(item, index) => item.id.toString()}
+            renderItem={({ item }) => {
+              return <WodExerciseListItem item={item} />
+            }}
+          >
+          </FlatList>
+        </View>
       </View>
-      <AddWorkoutModal 
+      <AddWorkoutModal
+        add={addExercise}
+        remove={removeExercise}
         visible={isVisible}
         handleClose={hideModal}
+        exercises={exercises}
       />
     </SafeAreaView>
   )
 }
 
 const styles = EStyleSheet.create({
-  addHeader: {
+  addHeaders: {
     fontSize: "1.2rem",
     fontWeight: '600',
     width: '90%'
@@ -75,7 +100,7 @@ const styles = EStyleSheet.create({
   },
   addWrapper: {
     width: '90%',
-    flex: 3,
+    marginTop: '1rem',
     flexDirection: 'column',
     alignItems: 'center',
   },
@@ -97,6 +122,14 @@ const styles = EStyleSheet.create({
     shadowRadius: 2,
     shadowOpacity: 1
   },
+  dropdownContainer: {
+    height: 40,
+    width: 150,
+    shadowColor: '$lightgray',
+    shadowOffset: {width: 2, height: 2},
+    shadowRadius: 2,
+    shadowOpacity: 1
+  },
   mainWrapper: {
     flex: 1,
     flexDirection: 'column',
@@ -108,8 +141,18 @@ const styles = EStyleSheet.create({
     padding: '0.5rem',
     textAlign: 'center'
   },
+  scoringHeader: {
+    fontSize: "1.2rem",
+    fontWeight: '600',
+  },  
+  styleWrapper: {
+    width: '90%',
+    marginTop: '1rem',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end'
+  },
   workoutWrapper: {
-    flex: 2,
     width: '100%',
     flexDirection: 'column',
     alignItems: 'center',

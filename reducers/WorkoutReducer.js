@@ -14,7 +14,7 @@ const initialState = {
   error: null
 }
 
-const addWorkout = (state = initialState, action) => {
+const workoutsReducer = (state = initialState, action) => {
   switch (action.type) {
     // Fetching workouts
     case WORKOUT_START:

@@ -11,16 +11,6 @@ const ExerciseListItem = ({ item, refresh }) => {
   const showModal = () => setIsVisible(true);
   const hideModal = () => setIsVisible(false);
 
-  // Delete exercise
-  function deleteExercise() {
-    axios.delete(`${exercisesApi}/${item.id}`)
-      .then(() => {
-        hideModal();
-        refresh();
-      })
-      .catch(err => console.log(err))
-  }
-
   return (
     <View>
       <TouchableOpacity
