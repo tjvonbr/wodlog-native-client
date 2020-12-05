@@ -1,23 +1,16 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import axios from 'axios'
-import { config } from '../constants/env-variables'
 import { FlatList, View } from 'react-native'
 import SelectableListItem from '../components/SelectableListItem'
 import Modal from 'react-native-modal'
 import EStyleSheet from 'react-native-extended-stylesheet'
 
-const AddWorkoutModal = ({ handleClose, visible, workout }) => {
+const AddWorkoutModal = ({ add, exercises, handleClose, remove, visible }) => {
   const [description, setDescription] = useState('')
   const [isVisible, SetIsVisible] = useState(false)
   const [name, setName] = useState('')
-  const [showExercise, setShowExercise] = useState(false)
 
-  const exercises = useSelector(state => state.exercises)
-  const wodsApi = config.wods
-
-  const showExerciseModal = () => setShowExercise(true)
-  const hideExerciseModal = () => setShowExercise(false)
+  const storeExercises = useSelector(state => state.exercises)
 
   /* Resetting input values on modal close */
   const resetState = () => {
@@ -31,28 +24,6 @@ const AddWorkoutModal = ({ handleClose, visible, workout }) => {
     resetState()
   }
 
-  /* 
-    Update the workout's name and description while
-    adding instances of the wod_exercise for the previously
-    created WOD
-  */
-  const editWod = () => {
-    return axios.put(`${wodsApi}/${workout.id}`, 
-      {name, description})
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
-  }
-
-  /* 
-    Adds an exercise to the workout 
-  */
-  const addExerciseToWod = () => {
-    return axios.post(
-      `${wodsApi}/${workout.id}/exercises`)
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
-  }
-
   return (
     <Modal 
       isVisible={visible}
@@ -64,11 +35,19 @@ const AddWorkoutModal = ({ handleClose, visible, workout }) => {
       <View style={styles.mainModal}>
         <View style={styles.flatListWrapper}>
           <FlatList 
-            data={exercises}
-            extraData={exercises}
+            data={storeExercises}
+            extraData={storeExercises}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ index, item }) => {
-              return <SelectableListItem index={index} item={item} />
+              return (
+                <SelectableListItem 
+                  add={add}
+                  index={index}
+                  item={item}
+                  remove={remove}
+                  exercises={exercises}
+                />
+              )
             }}
           >
           </FlatList>

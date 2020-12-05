@@ -4,21 +4,33 @@
   exercises to include in the daily WOD
 */
 
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-const SelectableListItem = ({ index, item }) => {
-  const [exercise, setExercise] = useState(item.name)
+const SelectableListItem = ({ add, exercises, index, item, remove }) => {
   const [isSelected, setIsSelected] = useState(false)
 
-  const exercises = useSelector(state => state.exercises)
-  const selectItem = () => setIsSelected(!isSelected)
+  // Renders the list item as selected/unselected if it's already in the
+  // list
+  useEffect(() => {
+    exercises.includes(item) ? setIsSelected(true) : null
+    }
+  )
+
+  const handleSelect = () => {
+    setIsSelected(true)
+    add(item)
+  }
+
+  const handleDeselect = () => {
+    setIsSelected(false)
+    remove(item)
+  }
 
   return (
-      <TouchableOpacity onPress={selectItem}>
+      <TouchableOpacity onPress={isSelected ? handleDeselect : handleSelect}>
         <View style={
           [
             styles.wrapper,
@@ -34,7 +46,7 @@ const SelectableListItem = ({ index, item }) => {
               isSelected ? styles.innerSelected : styles.innerUnselected
             ]    
           }>
-            <Text style={styles.itemText}>{exercise}</Text>
+            <Text style={styles.itemText}>{item.name}</Text>
             <FontAwesome5
               name={isSelected ? 'check' : 'plus'} 
               size={15} 
