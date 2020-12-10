@@ -1,3 +1,10 @@
+/* 
+  I chose this example of code because I think it demonstrates
+  my abilitiy to keep a clean, well-documented codebase, my ability to
+  style reusable components, and interact with app server and state
+  management architecture (Redux, in this case).
+*/
+
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { ActivityIndicator, FlatList, SafeAreaView, Text, TextInput, View } from 'react-native'
