@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { connect, useSelector } from 'react-redux'
+import { connect } from 'react-redux'
 import { ActivityIndicator, FlatList, SafeAreaView, Text, TextInput, View } from 'react-native'
 import AddExerciseModal from '../components/AddExerciseModal'
 import SmIconBtn from '../components/buttons/SmIconBtn'
@@ -9,9 +9,6 @@ import EStyleSheet from 'react-native-extended-stylesheet'
 
 function Exercises({ isLoading }) {
   const [isVisible, setIsVisible] = useState(false)
-  const [search, setSearch] = useState('')
-
-  const exercises = useSelector(state => state.exercises)
 
   // Toggle modal -- TODO see if this can be exported from component file
   const showModal = () => setIsVisible(true)
